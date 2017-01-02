@@ -15,14 +15,22 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 // Discord bot
-var bot = new discord.Client({autoReconnect:true});
-bot.login("token");
+var bot    = new discord.Client({autoReconnect:true});
+var token  = "";
+var secret = "";
 
-server.post('/', function (req, res, err)
+bot.login(token);
+
+server.post('/', function (req, res, next)
 {
-    console.log(req.body);
     var job    = req.body.name;
     var build  = req.body.build.number;
+    var secret = req.query.secret;
+
+    if (secret != secret)
+    {
+        res.send(403, "Unauthorized");
+    }
 
     if (req.body.build.status == "SUCCESS")
     {
@@ -32,10 +40,10 @@ server.post('/', function (req, res, err)
     {
         var status = "failed";
     }
-    
-    // Get all channels where 
+
+    // Get all channels where
     var channels = bot.channels;
-    
+
     channels.forEach(function (channel, id)
     {
         if (channel.type == "text" && channel.name == "general")
@@ -44,7 +52,7 @@ server.post('/', function (req, res, err)
         }
     })
 
-    next();
+    res.send("message delivered");
 });
 
 // Start server and listen to port 8082
