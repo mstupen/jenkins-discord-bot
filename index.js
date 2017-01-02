@@ -16,7 +16,7 @@ server.use(restify.bodyParser());
 
 // Discord bot
 var bot = new discord.Client({autoReconnect:true});
-bot.login("MjY1NTcyMDY0OTAxOTg4MzUy.C0xIKA.SzNmZJNgm1lKnpf77yghEK535bM");
+bot.login("token");
 
 server.post('/', function (req, res, err)
 {
